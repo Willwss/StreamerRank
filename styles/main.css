@@ -1,0 +1,21 @@
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'components/cards.css';
+
+/* Estilização da barra de rolagem */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ffd700;
+} 

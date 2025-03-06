@@ -1,0 +1,16 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-y: auto;
+    scroll-snap-type: y proximity;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} 

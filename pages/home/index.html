@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamingApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/styles/main.css" rel="stylesheet">
+    <script src="/scripts/main.js" type="module"></script>
+</head>
+<body class="bg-[#1a1a1a] text-white">
+    <div class="largura-total">
+        <nav class="barra-navegacao bg-black p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="texto-titulo text-2xl font-bold">StreamingApp</h1>
+                <div class="menu-navegacao hidden md:flex space-x-4 items-center">
+                    <a href="/pages/home/index.html" class="link-inicio hover:text-yellow-400">Início</a>
+                    
+                    <div id="secao-usuario">
+                        <!-- Será preenchido via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Seção Top 3 com fundo amarelo -->
+        <section class="secao-destaque bg-[#ffde59] text-black py-8 mb-8">
+            <div class="container mx-auto px-4">
+                <h2 class="titulo-destaque text-3xl font-bold mb-8 text-center">Top 3 colaboradores da comunidade</h2>
+                <div class="grid-streamers grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Streamer 1 (Esquerda) - Apllz -->
+                    <div class="cartao-streamer">
+                        <div class="container-video bg-black rounded-lg overflow-hidden" id="player-twitch-esquerda">
+                            <div id="player-twitch-esquerda"></div>
+                        </div>
+                        <h3 class="nome-streamer text-lg mt-2 text-center">Apllz</h3>
+                    </div>
+                    
+                    <!-- Streamer Principal (Centro) - Wills_s_ -->
+                    <div class="cartao-streamer">
+                        <div class="container-video bg-black rounded-lg overflow-hidden" id="player-twitch-centro">
+                            <div id="player-twitch-centro"></div>
+                        </div>
+                        <h3 class="nome-streamer text-lg mt-2 text-center">Wills_s_</h3>
+                    </div>
+                    
+                    <!-- Streamer 3 (Direita) - riqquec -->
+                    <div class="cartao-streamer">
+                        <div class="container-video bg-black rounded-lg overflow-hidden" id="player-twitch-direita">
+                            <div id="player-twitch-direita"></div>
+                        </div>
+                        <h3 class="nome-streamer text-lg mt-2 text-center">riqquec</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Adicionar após a seção de destaque -->
+        <section class="secao-ranking bg-black py-8">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col items-center">
+                    <h2 class="titulo-ranking text-2xl font-bold mb-4 text-center">Ranking de Colaboradores</h2>
+                    
+                    <!-- Botão de participação -->
+                    <button id="botao-participar" class="bg-[#ffde59] text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-400 transition-colors mb-8">
+                        Quero participar do ranking
+                    </button>
+
+                    <!-- Lista do ranking -->
+                    <div id="lista-ranking" class="w-full max-w-2xl">
+                        <h3 class="text-xl font-semibold mb-4">🏆 Top 10 Streamers que Mais Ajudam 🏆</h3>
+                        <ul id="ranking-streamers" class="space-y-2">
+                            <!-- Será preenchido via JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Script do player da Twitch -->
+        <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+
+        <!-- Criação dos Players da Twitch -->
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                // Player Esquerdo - Apllz
+                new Twitch.Player("player-twitch-esquerda", {
+                    channel: "apllz00",
+                    width: "100%",
+                    height: "100%",
+                    parent: ["localhost"]
+                });
+
+                // Player Central - Wills_s_
+                new Twitch.Player("player-twitch-centro", {
+                    channel: "wills_s_",
+                    width: "100%",
+                    height: "100%",
+                    parent: ["localhost"]
+                });
+
+                // Player Direito - riqquec
+                new Twitch.Player("player-twitch-direita", {
+                    channel: "riqquec",
+                    width: "100%",
+                    height: "100%",
+                    parent: ["localhost"]
+                });
+            });
+        </script>
+    </div>
+
+    <!-- Script para gerenciar autenticação -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const secaoUsuario = document.getElementById('secao-usuario');
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const idUsuario = parametrosUrl.get('user');
+        const URL_API = 'http://localhost:3000';
+
+        if (idUsuario) {
+            // Usuário está logado
+            secaoUsuario.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span class="texto-conectado text-yellow-400">Conectado</span>
+                    <a href="#" onclick="desconectar()" class="botao-sair text-red-500 hover:text-red-600">Sair</a>
+                </div>
+            `;
+        } else {
+            // Usuário não está logado
+            secaoUsuario.innerHTML = `
+                <a href="${URL_API}/auth/twitch" class="botao-login hover:text-yellow-400">Login com Twitch</a>
+            `;
+        }
+    });
+
+    function desconectar() {
+        window.location.href = '/pages/home/index.html';
+    }
+    </script>
+
+    <!-- Adicionar antes do fechamento do body -->
+    <script>
+    document.getElementById("botao-participar").addEventListener("click", async () => {
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const idUsuario = parametrosUrl.get('user');
+        
+        if (!idUsuario) {
+            alert("Faça login primeiro para participar do ranking!");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:3000/participar-ranking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: idUsuario, participa: true })
+            });
+
+            const data = await response.json();
+            alert(data.message);
+        } catch (error) {
+            console.error("Erro ao participar do ranking:", error);
+            alert("Erro ao participar do ranking. Tente novamente.");
+        }
+    });
+
+    async function carregarRanking() {
+        try {
+            const response = await fetch("http://localhost:3000/ranking");
+            const ranking = await response.json();
+
+            const listaRanking = document.getElementById("ranking-streamers");
+            listaRanking.innerHTML = ""; // Limpa a lista
+
+            ranking.forEach((streamer, index) => {
+                const item = document.createElement("li");
+                item.className = "bg-gray-800 p-4 rounded-lg flex justify-between items-center";
+                item.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="text-[#ffde59] font-bold mr-3">#${index + 1}</span>
+                        <span class="font-semibold">${streamer.nome}</span>
+                    </div>
+                    <span class="text-gray-400">${streamer.total_espectadores} espectadores ajudados</span>
+                `;
+                listaRanking.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar ranking:", error);
+        }
+    }
+
+    // Carregar ranking ao abrir a página
+    document.addEventListener("DOMContentLoaded", carregarRanking);
+    </script>
+</body>
+</html> 

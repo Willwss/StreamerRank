@@ -1,0 +1,52 @@
+.cartao-streamer {
+    transition: transform 0.2s;
+}
+
+.cartao-streamer:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.container-video {
+    position: relative;
+    padding-bottom: 56.25%;
+}
+
+.container-video img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cartao-categoria {
+    background-color: var(--cor-fundo-preto);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.cartao-categoria:hover {
+    background-color: #1f2937;
+    cursor: pointer;
+}
+
+.container-video #player-twitch-centro,
+.container-video #player-twitch-esquerda,
+.container-video #player-twitch-direita {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.container-video iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+} 
